@@ -31,6 +31,7 @@ stages:
 # Query Salesforce profiles in our primary orgs.
 ####################################################
 profileQuery:
+  extends: .salesforce-container
   stage: query
   rules:
     - if: $CI_PIPELINE_SOURCE == 'schedule' && $JOB_NAME == 'profileQuery'
