@@ -19,6 +19,13 @@ stages:
     - apt-get install -y nodejs
     - npm install --global @salesforce/cli@latest
     - sf version --verbose --json
+    - apt-get update
+    - apt-get install -y python3-venv
+    - python3 -m venv "venv"
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install simple-salesforce
+    - pip install colorama
 
 ####################################################
 # Query Salesforce profiles in our primary orgs.
@@ -30,14 +37,6 @@ profileQuery:
       when: always
     - when: never
   allow_failure: false
-  before_script:
-    - apt-get update
-    - apt-get install -y python3-venv
-    - python3 -m venv "venv"
-    - source venv/bin/activate
-    - pip install --upgrade pip
-    - pip install simple-salesforce
-    - pip install colorama
   script:
     - echo $PRODUCTION_AUTH_URL | sf org login sfdx-url --set-default --alias prod --sfdx-url-stdin
     - echo $FULLQA_AUTH_URL | sf org login sfdx-url --set-default --alias fullqa --sfdx-url-stdin
