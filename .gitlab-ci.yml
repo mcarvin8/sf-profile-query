@@ -1,0 +1,47 @@
+cache:
+  key: ${CI_COMMIT_REF_NAME}
+  paths:
+    - .sf/
+    - .sfdx/
+
+stages:
+  - query
+
+#####################################################
+# Define a container to install the Salesforce CLI.
+####################################################
+.salesforce-container:
+  image: ubuntu:latest
+  before_script:
+    - apt-get update
+    - apt-get install -y curl git jq
+    - curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+    - apt-get install -y nodejs
+    - npm install --global @salesforce/cli@latest
+    - sf version --verbose --json
+
+####################################################
+# Query Salesforce profiles in our primary orgs.
+####################################################
+profileQuery:
+  stage: query
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'schedule' && $JOB_NAME == 'profileQuery'
+      when: always
+    - when: never
+  allow_failure: false
+  before_script:
+    - apt-get update
+    - apt-get install -y python3-venv
+    - python3 -m venv "venv"
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install simple-salesforce
+    - pip install colorama
+  script:
+    - echo $PRODUCTION_AUTH_URL | sf org login sfdx-url --set-default --alias prod --sfdx-url-stdin
+    - echo $FULLQA_AUTH_URL | sf org login sfdx-url --set-default --alias fullqa --sfdx-url-stdin
+    - echo $SANDBOX_AUTH_URL | sf org login sfdx-url --set-default --alias dev --sfdx-url-stdin
+    - python ./scripts/python/query_salesforce_profiles.py
+  tags:
+    - aws,prd,us-west-2

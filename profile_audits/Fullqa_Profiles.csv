@@ -1,0 +1,7 @@
+Name,PermissionsCustomizeApplication,PermissionsModifyAllData,PermissionsAssignPermissionSets,PermissionsManageInternalUsers,PermissionsManagePasswordPolicies,PermissionsManageProfilesPermissionsets,PermissionsManageRoles,PermissionsManageSandboxes,PermissionsManageUsers,PermissionsInboundMigrationToolsUser,PermissionsOutboundMigrationToolsUser,PermissionsManageInteraction,PermissionsAuthorApex
+Admin-SoD-Prod-ITServiceDesk,True,False,True,True,True,True,True,False,True,False,False,False,False
+Admin-SoD-PreProd-Delivery,True,True,True,True,True,True,True,False,True,False,False,True,True
+Admin-SoD-PreProd-ServiceDesk,True,True,True,True,True,True,True,False,True,False,False,False,False
+Admin-SoD-Prod-Delivery,False,False,False,False,False,False,False,False,False,False,False,False,False
+Admin-SoD-Prod-ServiceDesk,True,False,True,True,True,True,True,True,True,False,False,False,False
+Release Manager,False,False,True,True,True,True,True,True,True,True,True,False,False
